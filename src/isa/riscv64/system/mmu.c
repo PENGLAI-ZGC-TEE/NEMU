@@ -337,14 +337,14 @@ int force_raise_pf(vaddr_t vaddr, int type){
 static bool napot_decode(paddr_t addr, word_t spmp_addr) {
   word_t spmp_addr_start, spmp_addr_end;
   spmp_addr_start = (spmp_addr & (spmp_addr + 1)) << SPMP_SHIFT;
-  spmp_addr_end = (spmp_addr | (spmp_addr + 1)) << SPMP_SHIFT;
+  spmp_addr_end = ((spmp_addr | (spmp_addr + 1)) + 1) << SPMP_SHIFT;
   return ((spmp_addr_start <= addr && addr < spmp_addr_end) ? true : false);
 }
 
 static uint8_t address_matching(paddr_t base, paddr_t addr, int len, word_t spmp_addr, uint8_t addr_mode) {
   paddr_t addr_s, addr_e;
   addr_s = addr;
-  addr_e = addr + len;
+  addr_e = addr + len - 1;
   uint8_t s_flag = 0;
   uint8_t e_flag = 0;
 
